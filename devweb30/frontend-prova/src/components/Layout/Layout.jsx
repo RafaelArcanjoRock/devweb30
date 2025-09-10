@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <div className="app">
       <aside className="sidebar">
-        <h1 className="brand">Admin</h1>
+        <h1 className="brand">Escola</h1>
 
         <nav className="nav">
           <NavLink to="/" end className={({isActive}) => `link ${isActive ? "active": ""}`}>
@@ -17,12 +17,15 @@ export default function Layout() {
           <NavLink to="/professores" className={({isActive}) => `link ${isActive ? "active": ""}`}>
             Professores
           </NavLink>
+          <NavLink to="/disciplinas" className={({isActive}) => `link ${isActive ? "active": ""}`}>
+            Disciplinas
+          </NavLink>
         </nav>
       </aside>
 
       <main className="content">
         <header className="header">
-          <span>Painel Administrativo — Demo de Navegação</span>
+          <span>Painel Escolar — Demo de Navegação</span>
         </header>
 
         <section className="page">
@@ -30,7 +33,7 @@ export default function Layout() {
         </section>
 
         <footer className="footer">
-          © {new Date().getFullYear()} Sua Empresa
+          © {new Date().getFullYear()} Sua Escola
         </footer>
       </main>
     </div>

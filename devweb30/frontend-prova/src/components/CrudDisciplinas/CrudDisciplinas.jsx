@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
-import "./CrudAlunos.css";
+import "./CrudDisciplinas.css";
 
-const API = "http://localhost:4000/api/alunos";
+const API = "http://localhost:4000/api/disciplinas";
 
-export default function CrudAlunos() {
+export default function CrudDisciplinas() {
   const [lista, setLista] = useState([]);
   const [form, setForm] = useState({
     id: null,
     nome: "",
-    idade: "",
   });
 
   const emEdicao = form.id !== null;
 
   // Carregar lista inicial da API
   useEffect(() => {
-    async function carregarAlunos() {
+    async function carregarDisciplinas() {
       const res = await fetch(API);
       const dados = await res.json();
       setLista(dados || []);
     }
-    carregarAlunos();
+    carregarDisciplinas();
   }, []);
 
   function handleChange(e) {
@@ -29,16 +28,15 @@ export default function CrudAlunos() {
   }
 
   function limparForm() {
-    setForm({ id: null, nome: "", idade: "" });
+    setForm({ id: null, nome: ""});
   }
 
-  async function criarAluno() {
+  async function criarDisciplina() {
     const res = await fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         nome: form.nome,
-        idade: Number(form.idade),
       }),
     });
     const novo = await res.json();
@@ -46,13 +44,12 @@ export default function CrudAlunos() {
     limparForm();
   }
 
-  async function atualizarAluno() {
+  async function atualizarDisciplina() {
     const res = await fetch(`${API}/${form.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         nome: form.nome,
-        idade: Number(form.idade),
       }),
     });
     const atualizado = await res.json();
@@ -63,28 +60,28 @@ export default function CrudAlunos() {
     limparForm();
   }
 
-  async function removerAluno(id) {
-    const confirmar = window.confirm("Tem certeza que deseja remover este aluno?");
+  async function removerDisciplina(id) {
+    const confirmar = window.confirm("Tem certeza que deseja remover esta disciplina?");
     if (!confirmar) return;
 
     await fetch(`${API}/${id}`, { method: "DELETE" });
     setLista((itens) => itens.filter((a) => a.id !== id));
   }
 
-  function iniciarEdicao(aluno) {
-    setForm(aluno);
+  function iniciarEdicao(disciplina) {
+    setForm(disciplina);
   }
   
   function onSubmit(e) {
     e.preventDefault();
-    if (emEdicao) atualizarAluno();
-    else criarAluno();
+    if (emEdicao) atualizarDisciplina();
+    else criarDisciplina();
   }
 
   return (
     <div className="card crud">
-      <h2 className="crud__title">Gestão de Alunos</h2>
-      <p className="crud__subtitle">CRUD simples de Alunos consumindo API.</p>
+      <h2 className="crud__title">Gestão de Disciplinas</h2>
+      <p className="crud__subtitle">CRUD simples de Disciplinas consumindo API.</p>
 
       {/* FORMULÁRIO */}
       <form onSubmit={onSubmit} className="crud__form">
@@ -97,19 +94,7 @@ export default function CrudAlunos() {
               name="nome"
               value={form.nome}
               onChange={handleChange}
-              placeholder="Ex.: Maria Oliveira"
-            />
-          </div>
-
-          <div className="form-field">
-            <label className="label">Idade</label>
-            <input
-              className="input"
-              type="number"
-              name="idade"
-              value={form.idade}
-              onChange={handleChange}
-              placeholder=""
+              placeholder="Ex.: Matemática"
             />
           </div>
         </div>
@@ -128,24 +113,21 @@ export default function CrudAlunos() {
         <thead>
           <tr>
             <th className="th">Nome</th>
-            <th className="th">Idade</th>
-            <th className="th">Ações</th>
           </tr>
         </thead>
         <tbody>
           {lista.length === 0 ? (
             <tr>
-              <td className="td" colSpan={3}>— Nenhum aluno cadastrado —</td>
+              <td className="td" colSpan={3}>— Nenhuma disciplina cadastrada —</td>
             </tr>
           ) : (
             lista.map((a) => (
               <tr key={a.id}>
                 <td className="td">{a.nome}</td>
-                <td className="td">{a.idade}</td>
                 <td className="td">
                   <div className="row-actions">
                     <button className="btn btn-small" onClick={() => iniciarEdicao(a)}>Editar</button>
-                    <button className="btn btn-small" onClick={() => removerAluno(a.id)}>Remover</button>
+                    <button className="btn btn-small" onClick={() => removerDisciplina(a.id)}>Remover</button>
                   </div>
                 </td>
               </tr>
